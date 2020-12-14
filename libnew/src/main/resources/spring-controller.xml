@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
+	
+	<mvc:view-controller path="/main" view-name="main"/>
+	<!-- /main이라는 경로로 들어올 경우 바로 main.jsp로 연결해주겠다 -->
+	<mvc:view-controller path="/" view-name="main"/>
+	
+	<mvc:view-controller path="/board" view-name="/library/board"/>
+	
+	<mvc:view-controller path="/write" view-name="/write/writebook"/>
+	
+	<mvc:view-controller path="/intro" view-name="/intro/intro" />
+		
+	<mvc:view-controller path="/guide" view-name="/guide/guide" />	
+	
+	<mvc:view-controller path="/map" view-name="/map/map" />
+	
+	<mvc:view-controller path="/calendar" view-name="/calendar/calendar" />
+	
+	<mvc:view-controller path="/bookSearch" view-name="library/bookSearch"/>
+	
+	<bean class="spring.controller.RegisterController" >
+		<property name="memberRegisterService" ref="memberRegSvc" />
+	</bean>
+	
+	<bean class="spring.controller.SurveyController"/>
+	
+	<bean class="spring.controller.LoginController">
+		<property name="authService" ref="authSvc"/>
+	</bean>
+	
+	<bean class="spring.controller.LogoutController" />
+	
+	<bean class="spring.controller.ChangePwdController">
+		<constructor-arg ref="changePwdSvc" />
+	</bean>
+	
+	<bean class="spring.bookcontroller.BoardListController">
+		<property name="booksDao" ref="booksDao" />
+	</bean>	
+	<bean class="spring.bookcontroller.BookDetailController">
+		<property name="booksDao" ref="booksDao" />
+	</bean>
+	<bean class="spring.bookcontroller.WriteBookController">
+		<property name="bookWriteService" ref="bookwrite"  />
+	</bean>
+	<bean class="spring.bookcontroller.ChangeBookController">
+		<property name="BookUpdateService" ref="bookupdate" />
+	</bean>
+	<bean class="spring.bookcontroller.BookDeleteController">
+		<property name="BookDeleteService" ref="bookdelete"/>
+	</bean>
+	
+	<bean class="spring.bookcontroller.BookSearchController">
+		<property name="bookSearchService" ref="bookSearch" />
+		<constructor-arg ref="booksDao" />
+	</bean>
+	
+	<bean class="spring.boardcontroller.FreeBoardListController">
+		<property name="boardDao" ref="boardDao" />
+	</bean>
+	<bean class="spring.boardcontroller.FreeBoardDetailController">
+		<property name="boardDao" ref="boardDao"/>
+	</bean>
+	<bean class="spring.boardcontroller.FreeBoardWriteController">
+		<property name="boardWriteService" ref="boardWrite"/>
+	</bean>
+	<bean class="spring.boardcontroller.FreeBoardUpdateController">
+		<property name="boardUpdateService" ref="boardUpdate"  />
+	</bean>
+	<bean class="spring.boardcontroller.FreeBoardDeleteController">
+		<property name="boardDeleteService" ref="boardDelete" />
+	</bean>
+
+	
+	
+	
+<!-- 	<mvc:interceptors>
+
+      <mvc:interceptor>
+         <mvc:mapping path="/mypage/**"/>  
+         <bean class="alphaKids.interceptor.AuthCheckInterceptor" />       
+      </mvc:interceptor>
+
+   </mvc:interceptors> -->
+</beans>
+
+

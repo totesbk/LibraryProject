@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" 
+		destroy-method="close">
+		<property name="driverClass" value="oracle.jdbc.OracleDriver"/>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@ttottofam.site:1522:XE"/>
+		<property name="user" value="Team3"/>
+		<property name="password" value="0104"/>
+	</bean>
+	
+	<bean id="transactionManager"
+	class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<bean id="memberDao" class="spring.dao.MemberDao">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<bean id="memberRegSvc" class="spring.service.MemberRegisterService">
+		<constructor-arg ref="memberDao" />
+	</bean>
+	
+	<bean id="changePwdSvc" class="spring.service.ChangePasswordService">
+		<constructor-arg ref="memberDao"/>
+	</bean>
+		
+	<bean id="authSvc" class="spring.service.AuthService">
+		<property name="memberDao" ref="memberDao" />
+	</bean>
+	<bean id ="booksDao" class="spring.bookdao.BooksDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="bookwrite" class="spring.bookservice.BookWriteService">
+		<constructor-arg ref="booksDao" />
+	</bean>
+	<bean id="bookupdate" class="spring.bookservice.BookUpdateService">
+		<constructor-arg ref="booksDao" />
+	</bean>
+	<bean id="bookdelete" class="spring.bookservice.BookDeleteService">
+		<constructor-arg ref="booksDao" />
+	</bean>
+	<bean id="bookSearch" class="spring.bookservice.BookSearchService">
+		<constructor-arg ref="booksDao" />
+	</bean>
+	
+	<bean id="boardDao" class="spring.boarddao.FreeBoardDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<bean id ="boardWrite" class="spring.boardservice.FreeBoardWriteService">
+		<constructor-arg ref="boardDao" />
+	</bean>
+	<bean id ="boardUpdate" class="spring.boardservice.FreeBoardUpdateService">
+		<constructor-arg ref="boardDao" />
+	</bean>
+	<bean id ="boardDelete" class="spring.boardservice.FreeBoardDeleteService">
+		<constructor-arg ref="boardDao" />
+	</bean>
+	
+	
+	
+	<bean id="multipartResolver" 
+	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="52428800" ></property>
+		<property name="maxInMemorySize" value="100000000" ></property>
+		<property name="defaultEncoding" value="UTF-8" ></property>
+	</bean>
+	
+	
+</beans>
